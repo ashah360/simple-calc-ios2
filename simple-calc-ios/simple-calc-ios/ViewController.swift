@@ -1,0 +1,154 @@
+//
+//  ViewController.swift
+//  simple-calc-ios
+//
+//  Created by Arman Shah on 10/19/18.
+//  Copyright © 2018 Arman Shah. All rights reserved.
+//
+
+import UIKit
+
+class ViewController: UIViewController {
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view, typically from a nib.
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+
+    @IBOutlet weak var labelReference: UILabel!
+    
+    @IBAction func buttonPressed(_ sender: Any) {
+        let eqInput : String = (sender as AnyObject).titleLabel!!.text!
+            
+            switch eqInput {
+            case "=":
+                let inputString : [String] = userEq(uInput: labelReference.text!)
+                
+                switch inputString[inputString.count - 1] {
+                case "avg":
+                    var average : Int = 0
+                        
+                    for i in 0...inputString.count-2 {
+                        let toAdd : Int = Int(inputString[i])!
+                        average += toAdd
+                    }
+                    
+                    labelReference.text = String(average / (inputString.count - 1))
+                    break
+                case "count":
+                    labelReference.text = String(inputString.count - 1)
+                    break
+                case "fact":
+                    let number : Int = abs(Int(inputString[0])!)
+                    var computedFact : Int = 1
+                    if number == 1 || number == 0 {
+                        labelReference.text = String(1)
+                        break
+                    } else {
+                        for i in stride(from: number, to: 1, by: -1) {
+                            computedFact *= i
+                        }
+                    }
+                    labelReference.text = String(Int(inputString[0])! > 0 ? computedFact : -computedFact)
+                case "+":
+                    let number1 : Int = Int(inputString[0])!
+                    let number2 : Int = Int(inputString[1])!
+                    labelReference.text = String(number1 + number2)
+                case "-":
+                    let number1 : Int = Int(inputString[0])!
+                    let number2 : Int = Int(inputString[1])!
+                    labelReference.text = String(number1 - number2)
+                case "*":
+                    let number1 : Int = Int(inputString[0])!
+                    let number2 : Int = Int(inputString[1])!
+                    labelReference.text = String(number1 * number2)
+                case "/":
+                    let number1 : Int = Int(inputString[0])!
+                    let number2 : Int = Int(inputString[1])!
+                    labelReference.text = String(number1 / number2)
+                case "%":
+                    let number1 : Int = Int(inputString[0])!
+                    let number2 : Int = Int(inputString[1])!
+                    labelReference.text = String((number1 % number2 + number2) % number2)
+                    
+                default:
+                    labelReference.text = ""
+                }
+                
+            case "C":
+                labelReference.text = ""
+                
+            default:
+                if Int(eqInput) != nil {
+                    labelReference.text = labelReference.text! + eqInput
+                } else {
+                    labelReference.text = labelReference.text! + " " + eqInput + " "
+                }
+            }
+        }
+    
+        func userEq(uInput: String) -> [String] {
+            var uInputStrings : [String] = []
+            
+            var equationContents : [String] = uInput.components(separatedBy: " ")
+            print(equationContents)
+            
+            if equationContents[0] == "" {
+                equationContents.removeFirst()
+            }
+            
+            if equationContents[equationContents.count-1] == "" {
+                equationContents.removeLast()
+            }
+            print(equationContents)
+            var finalIndex : Int = equationContents.count - 1
+            var i : Int = 0
+            
+            while i < finalIndex {
+                print(i)
+                let indexChar = equationContents[i]
+                if indexChar == "-" {
+                    if i == 0 || (i > 0 && Int(equationContents[i - 1]) == nil) {
+                        equationContents[i+1] = indexChar + equationContents[i + 1]
+                        equationContents.remove(at: i)
+                        finalIndex -= 1
+                        i -= 1
+                    }
+                }
+                i += 1
+            }
+            print(equationContents)
+            
+            switch equationContents[1] {
+            case "avg":
+                for index in 0...equationContents.count - 1 {
+                    
+                    if equationContents[index] != "avg" && equationContents[index] != "count" {
+                        uInputStrings.append(equationContents[index])
+                    }
+                    
+                }
+                equationContents[1] == "avg" ? uInputStrings.append("avg") : uInputStrings.append("count")
+                break
+            default:
+                for index in 0...equationContents.count-1 {
+                    if Int(equationContents[index]) != nil {
+                        uInputStrings.append(equationContents[index])
+                    }
+                }
+                uInputStrings.append(equationContents[1])
+                break
+            }
+            
+            return uInputStrings
+        }
+    
+}
+    
+
+
