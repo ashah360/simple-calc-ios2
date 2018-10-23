@@ -333,13 +333,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="eei-84-49U"/>
                     </view>
+                    <connections>
+                        <outlet property="scrollContainer" destination="eNA-Bp-Dfh" id="AXV-dJ-x6e"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1S0-45-12c" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1061.5999999999999" y="134.48275862068968"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="Nxc-Rs-D8z"/>
-    </inferredMetricsTieBreakers>
 </document>

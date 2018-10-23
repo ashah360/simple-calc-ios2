@@ -10,8 +10,34 @@ import UIKit
 
 class HistoryViewController: UIViewController {
 
+    @IBOutlet weak var scrollContainer: UIScrollView!
+    var numLabels : Int = 0
+    var stringOfInputs : [String] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        for text in stringOfInputs {
+            
+            let lbl = UILabel(frame: CGRect(x: 30, y: 50 + (34 * numLabels), width: 345, height: 25))
+            
+            lbl.text = text
+            
+            lbl.textColor = .white
+            
+            lbl.backgroundColor = .black
+            
+            lbl.font = UIFont.systemFont(ofSize: 25)
+            
+            lbl.numberOfLines = 0
+            
+            lbl.lineBreakMode = .byTruncatingTail
+            
+            lbl.sizeToFit()
+            
+            
+            self.numLabels += 1
+            self.scrollContainer.addSubview(lbl)
+        }
 
         // Do any additional setup after loading the view.
     }

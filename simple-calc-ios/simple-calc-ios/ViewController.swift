@@ -9,6 +9,7 @@
 import UIKit
 
 class ViewController: UIViewController {
+    var historyOfInputs: [String] = []
     
     func userEq(uInput: String) -> [String] {
         var uInputStrings : [String] = []
@@ -81,10 +82,12 @@ class ViewController: UIViewController {
     
     @IBAction func buttonPressed(_ sender: Any) {
         let eqInput : String = (sender as AnyObject).titleLabel!!.text!
+        var historyEq: String = ""
             
             switch eqInput {
                 case "=":
                     let inputString : [String] = userEq(uInput: labelReference.text!)
+                    historyEq = labelReference.text! + " = "
                     
                     switch inputString[inputString.count - 1] {
                     case "avg":
@@ -96,9 +99,11 @@ class ViewController: UIViewController {
                         }
                         
                         labelReference.text = String(average / (inputString.count - 1))
+                        historyEq += String(average / (inputString.count - 1))
                         break
                     case "count":
                         labelReference.text = String(inputString.count - 1)
+                        historyEq += String(inputString.count - 1)
                         break
                     case "fact":
                         let number : Int = abs(Int(inputString[0])!)
@@ -112,26 +117,32 @@ class ViewController: UIViewController {
                             }
                         }
                         labelReference.text = String(Int(inputString[0])! > 0 ? factorialResult : -factorialResult)
+                        historyEq += String(Int(inputString[0])! > 0 ? factorialResult : -factorialResult)
                     case "/":
                         let number1 : Int = Int(inputString[0])!
                         let number2 : Int = Int(inputString[1])!
                         labelReference.text = String(number1 / number2)
+                        historyEq += String(number1 / number2)
                     case "-":
                         let number1 : Int = Int(inputString[0])!
                         let number2 : Int = Int(inputString[1])!
                         labelReference.text = String(number1 - number2)
+                        historyEq += String(number1 - number2)
                     case "%":
                         let number1 : Int = Int(inputString[0])!
                         let number2 : Int = Int(inputString[1])!
                         labelReference.text = String((number1 % number2 + number2) % number2)
+                        historyEq += String((number1 % number2 + number2) % number2)
                     case "+":
                         let number1 : Int = Int(inputString[0])!
                         let number2 : Int = Int(inputString[1])!
                         labelReference.text = String(number1 + number2)
+                        historyEq += String(number1 + number2)
                     case "*":
                         let number1 : Int = Int(inputString[0])!
                         let number2 : Int = Int(inputString[1])!
                         labelReference.text = String(number1 * number2)
+                        historyEq += String(number1 * number2)
                         
                     default:
                         labelReference.text = ""
@@ -147,6 +158,17 @@ class ViewController: UIViewController {
                 } else {
                     labelReference.text = labelReference.text! + " " + eqInput + " "
                 }
+            }
+            if historyEq != "" {
+                self.historyOfInputs.append(historyEq)
+            }
+        }
+    
+        override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+            if segue.identifier == "tohistory" {
+                let secondVC = segue.destination as! HistoryViewController
+                secondVC.stringOfInputs = self.historyOfInputs
+                
             }
         }
     
